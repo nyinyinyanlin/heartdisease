@@ -1,0 +1,143 @@
+{% load widget_tweaks %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+      body {
+        background: url(http://hypertensioninstitute.com/wp-content/uploads/heart-model.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        padding: 40px;
+      }
+      label {
+        font-weight: bold;
+        color: white;
+      }
+      form {
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+        background-color: rgba(50,50,50,0.5);
+        border-radius: 10px;
+      }
+    </style>
+    <title>Heart Disease Prediction System</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-lg-5 mx-auto mb-1">
+    <form>
+      {% csrf_token %}
+      {% for hidden_field in form.hidden_fields %}
+        {{hidden_field}}
+      {% endfor %}
+      <div class="form-row">
+      {% for field in form.visible_fields %}
+        <div class="form-group col-lg-12 mx-auto">
+          {{  field.label_tag }}
+          {% render_field field class="form-control" %}
+        </div>
+      {% if forloop.counter|divisibleby:1 %}
+      </div>
+      <div class="form-row">
+      {% endif %}
+      {% endfor %}
+    </div>
+      <div class="row">
+        <div class="col-md-5 mx-auto mb-2">
+          <button class="btn btn-danger btn-block reset-btn">Reset</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <button type="submit" class="btn btn-primary btn-block" id="id_test">Test</button>
+        </div>
+      </div>
+    </form>
+    <div class="row card-success" style="display:none">
+      <div class="col-lg-12 mt-5 mx-auto">
+        <img class="card-img-top"  style="border-radius: 10px 10px 0px 0px; padding: 0px;" src="http://eco18.com/wp-content/uploads/2015/02/heartfruit.png" alt="Card image cap">
+        <div class="card border-success mb-3" style="display:block; border-radius: 0px 0px 10px 10px;  border-style: none">
+          <!--<div class="card-header bg-transparent border-success">Header</div>-->
+          <div class="card-body text-success">
+            <h5 class="card-title"><strong>Congratulations!!!</strong></h5>
+            <p class="card-text">Our system predicted that your heart is healthy and fit. Keep up your great work in having a healty heart and lifestlye.</p>
+          </div>
+          <div class="card-footer bg-transparent border-success text-right" style="border-top-style: dashed"><button type="button" class="btn btn-outline-success card-success-btn">Yayy</button></div>
+        </div>
+      </div>
+  </div>
+  <div class="row card-danger" style="display:none">
+    <div class="col-lg-12 mt-5 mx-auto">
+      <img class="card-img-top"  style="border-radius: 10px 10px 0px 0px; padding: 0px;" src="https://s3.amazonaws.com/s3-website-hd/resources/web/articles/sin/sin-heart-healthy-rollup-article-cover.jpg" alt="Card image cap">
+      <div class="card border-danger mb-3" style="display:block; border-radius: 0px 0px 10px 10px;  border-style: none">
+        <!--<div class="card-header bg-transparent border-success">Header</div>-->
+        <div class="card-body text-danger">
+          <h5 class="card-title">We're sorry...</h5>
+          <p class="card-text">Our system predicted that your  heart may not be healthy. You might want to change your lifestyles and habits to maintain a healthy body. Eating healthy foods and regular exercises will help you keeping a healthy lifestyle. </p>
+        </div>
+        <div class="card-footer bg-transparent border-danger text-right" style="border-top-style: dashed"><button type="button" class="btn btn-outline-danger card-danger-btn">Dismiss</button></div>
+      </div>
+    </div>
+</div>
+</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function(){
+        $("#id_test").click(function(e){
+          e.preventDefault();
+          var data = {};
+          $(".form-control").each(function(index){
+            data[$(this).attr('name')] = $(this).val();
+          });
+          data['csrfmiddlewaretoken'] = $('input[name=csrfmiddlewaretoken]').val();
+          $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": "http://localhost:8000/post/",
+            "data": data,
+            "success": function(response){
+              if(response.result>=0){
+                if(response.result == 1){
+                    $(".card-danger").hide();
+                    $(".card-success").show();
+                    $(".card-success-btn").click(function(e){
+                      $(".card-success").hide();
+                    });
+                    $(".reset-btn").click(function(e){
+                      $(".card-success").hide();
+                    });
+                    $('html, body').stop().animate({ scrollTop: $(".card-success").offset().top }, 500);
+                } else {
+                  $(".card-success").hide();
+                  $(".card-danger").show();
+                  $(".card-danger-btn").click(function(e){
+                    $(".card-danger").hide();
+                  });
+                  $(".reset-btn").click(function(e){
+                    $(".card-danger").hide();
+                  });
+                  $('html, body').stop().animate({ scrollTop: $(".card-danger").offset().top }, 500);
+                }
+              }else{
+                alert("Invalid Input!");
+              }
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
