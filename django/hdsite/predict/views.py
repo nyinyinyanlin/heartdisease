@@ -31,5 +31,5 @@ def post(request):
 			for name in ["age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal"]:
 				record.append(form.cleaned_data[name])
 			print(svc.predict([record]))
-			return JsonResponse({'result':0})#svc.predict([record])[0]})
+			return JsonResponse({'result':svc.predict([record])[0]})#svc.predict([record])[0]})
 	return JsonResponse({'result':-1})
