@@ -31,7 +31,7 @@ class RecordForm(forms.Form):
 		initial='1',
 		coerce=float)
 
-	trestbps = forms.FloatField(
+	trestbps_upr = forms.FloatField(
 		label='Resting Blood Pressure - Lower',
 		widget=forms.NumberInput(
 			attrs={
@@ -41,7 +41,7 @@ class RecordForm(forms.Form):
 		min_value=0.0,
 		max_value=500.0)
 
-	trestbps_upr = forms.FloatField(
+	trestbps = forms.FloatField(
 		label='Resting Blood Pressure - Upper',
 		widget=forms.NumberInput(
 			attrs={
