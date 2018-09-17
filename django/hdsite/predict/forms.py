@@ -104,7 +104,7 @@ class RecordForm(forms.Form):
 		widget=forms.NumberInput(
 			attrs={
 				'placeholder':'',
-				'step':'1'
+				'step':'0.1'
 				}),
 		min_value=0.0,
 		max_value=120.0)
@@ -136,5 +136,5 @@ class RecordForm(forms.Form):
 			('6','Fixed Defect'),
 			('7','Reversible Defect'),
 		),
-		initial='0',
+		initial='3',
 		coerce=float)
