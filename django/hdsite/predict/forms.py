@@ -112,9 +112,9 @@ class RecordForm(forms.Form):
 	slope = forms.TypedChoiceField(
 		label='Slope of Peak Exercise ST Segment',
 		choices=(
-			('1','Downsloping'),
+			('1','Upsloping'),
 			('2','Flat'),
-			('3','Upsloping'),
+			('3','Downsloping'),
 		),
 		initial='2',
 		coerce=float)
