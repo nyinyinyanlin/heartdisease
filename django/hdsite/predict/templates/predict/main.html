@@ -108,7 +108,7 @@
         $.ajax({
           "type": "POST",
           "dataType": "json",
-          "url": "http://localhost:8000/post/",
+          "url": window.location.href+"/post/",
           "data": data,
           "success": function(response){
             console.log(response.result);
