@@ -94,6 +94,6 @@ svc.fit(x_train,y_train)
 y_pred = svc.predict(x_test)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
-#model_filename = "trained_svm_model.pkl"
-#with open(model_filename, 'wb') as file:
-#	pickle.dump(svc, file)
+model_filename = "trained_svm_model.pkl"
+with open(model_filename, 'wb') as file:
+	pickle.dump(svc, file)
