@@ -14,6 +14,9 @@ import pickle
 with open(os.path.join(settings.BASE_DIR,'trained_svm_model.pkl'), 'rb') as file:
 	svc = pickle.load(file)
 
+with open(os.path.join(settings.BASE_DIR,'scaler.pkl'), 'rb') as file:
+	scaler = pickle.load(file)
+
 # Create your views here.
 def index(request):
 	form = RecordForm()
@@ -30,6 +33,8 @@ def post(request):
 			record = [];
 			for name in ["age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal"]:
 				record.append(form.cleaned_data[name])
+			print(record)
+			record = scaler.transform(record)
 			print(record)
 			print(svc.predict([record]))
 			return JsonResponse({'result':svc.predict([record])[0]})#svc.predict([record])[0]})
