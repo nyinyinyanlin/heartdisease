@@ -1,3 +1,5 @@
+This dataset is for testing of trained model. These data are not included in training the prediction model and therefore the results could be reliable.
+
 "age": age in years
 "sex": sex (1 = male; 0 = female)
 "cp": chest pain type
